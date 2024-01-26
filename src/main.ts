@@ -42,6 +42,11 @@ export async function main() {
       describe: "Delete assets as well",
       default: false,
     })
+    .option("host", {
+      type: "string",
+      description: "API host",
+      default: "api.contentful.com"
+    })
     .option("yes", {
       type: "boolean",
       describe: "Auto-confirm delete prompt",
@@ -61,12 +66,14 @@ export async function main() {
   const batchSize: number = argv["batch-size"];
   const isContentTypes: boolean = argv["content-types"];
   const isAssets: boolean = argv["assets"];
+  const host: string = argv["host"];
   const yes: boolean = argv["yes"];
 
   const env: string = argv["env"] || "master";
 
   const contentfulManagementClient = createClient({
     accessToken,
+    host,
   });
   const contentfulSpace = await contentfulManagementClient.getSpace(spaceId);
   console.log(`Using space "${spaceId}" (${contentfulSpace.name})`);
